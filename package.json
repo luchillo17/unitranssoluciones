@@ -23,7 +23,9 @@
     "update": "nx migrate latest",
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "postinstall": "exitzero electron-builder install-app-deps",
+    "serve:uploader": "nx run-many --target=serve --all=true --parallel=true"
   },
   "private": true,
   "dependencies": {
@@ -61,6 +63,7 @@
     "babel-jest": "26.2.2",
     "cypress": "^7.3.0",
     "dotenv": "8.2.0",
+    "electron": "^11.3.0",
     "eslint": "7.22.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
@@ -68,6 +71,7 @@
     "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-react": "7.23.1",
     "eslint-plugin-react-hooks": "4.2.0",
+    "exitzero": "^1.0.1",
     "jest": "26.2.2",
     "nx-electron": "^11.1.2",
     "prettier": "2.2.1",

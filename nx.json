@@ -1,14 +1,9 @@
 {
   "implicitDependencies": {
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     ".eslintrc.json": "*"
   },
-  "affected": {
-    "defaultBase": "master"
-  },
+  "affected": { "defaultBase": "master" },
   "npmScope": "unitranssoluciones",
   "tasksRunnerOptions": {
     "default": {
@@ -22,12 +17,8 @@
     }
   },
   "projects": {
-    "uploader-ui": {
-      "tags": []
-    },
-    "uploader-ui-e2e": {
-      "tags": [],
-      "implicitDependencies": ["uploader-ui"]
-    }
+    "uploader-ui": { "tags": [] },
+    "uploader-ui-e2e": { "tags": [], "implicitDependencies": ["uploader-ui"] },
+    "uploader-app": { "tags": [], "implicitDependencies": ["uploader-ui"] }
   }
 }

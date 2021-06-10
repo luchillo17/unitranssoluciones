@@ -43,7 +43,8 @@
             ],
             "styles": ["apps/uploader-ui/src/styles.scss"],
             "scripts": [],
-            "webpackConfig": "@nrwl/react/plugins/webpack"
+            "webpackConfig": "@nrwl/react/plugins/webpack",
+            "baseHref": "./"
           },
           "configurations": {
             "production": {
@@ -121,6 +122,73 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/uploader-ui-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "uploader-app": {
+      "root": "apps/uploader-app",
+      "sourceRoot": "apps/uploader-app/src",
+      "projectType": "application",
+      "prefix": "uploader-app",
+      "targets": {
+        "build": {
+          "executor": "nx-electron:build",
+          "options": {
+            "outputPath": "dist/apps/uploader-app",
+            "main": "apps/uploader-app/src/main.ts",
+            "tsConfig": "apps/uploader-app/tsconfig.app.json",
+            "assets": ["apps/uploader-app/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/uploader-app/src/environments/environment.ts",
+                  "with": "apps/uploader-app/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "nx-electron:execute",
+          "options": {
+            "buildTarget": "uploader-app:build"
+          }
+        },
+        "package": {
+          "executor": "nx-electron:package",
+          "options": {
+            "name": "uploader-app",
+            "frontendProject": "uploader-ui",
+            "outputPath": "dist/packages",
+            "prepackageOnly": true
+          }
+        },
+        "make": {
+          "executor": "nx-electron:make",
+          "options": {
+            "name": "uploader-app",
+            "frontendProject": "uploader-ui",
+            "outputPath": "dist/executables"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/uploader-app/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/uploader-app"],
+          "options": {
+            "jestConfig": "apps/uploader-app/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
