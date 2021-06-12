@@ -1,3 +1,4 @@
+import { CssBaseline } from '@material-ui/core';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
@@ -9,6 +10,7 @@ console.log('React app loaded');
 ReactDOM.render(
   <StrictMode>
     <HashRouter>
+      <CssBaseline />
       <App />
     </HashRouter>
   </StrictMode>,
