@@ -1,18 +1,24 @@
-import { CssBaseline } from '@material-ui/core';
+import {
+  createMuiTheme,
+  CssBaseline,
+  MuiThemeProvider,
+} from '@material-ui/core';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
 
 import App from './app/app';
 
-console.log('React app loaded');
+const theme = createMuiTheme();
 
 ReactDOM.render(
   <StrictMode>
-    <HashRouter>
-      <CssBaseline />
-      <App />
-    </HashRouter>
+    <MuiThemeProvider theme={theme}>
+      <HashRouter>
+        <CssBaseline />
+        <App />
+      </HashRouter>
+    </MuiThemeProvider>
   </StrictMode>,
   document.getElementById('root')
 );
