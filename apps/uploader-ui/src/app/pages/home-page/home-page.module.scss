@@ -1,0 +1,15 @@
+.homeContainer {
+  gap: 1rem;
+  display: grid;
+  padding: 1rem;
+
+  h1 {
+    margin: 0;
+  }
+
+  .cardContainer {
+    gap: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}

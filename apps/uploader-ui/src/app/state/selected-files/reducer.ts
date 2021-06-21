@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../';
 import { produce } from 'immer';
+import { IStorageFile } from '../../shared/models/storage-file.model';
 
 // Define a type for the slice state
 interface SelectedFilesState {
-  files: File[];
+  files: IStorageFile[];
 }
 
 // Define the initial state using that type
@@ -18,11 +19,13 @@ export const selectedFilesSlice = createSlice({
   initialState,
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    addFile: produce((state, action: PayloadAction<File>) => {
-      state.files.push(action.payload);
-    }),
-    removeFile: produce(
-      (state: SelectedFilesState, action: PayloadAction<File>) => {
+    addSelectedFile: produce(
+      (state: SelectedFilesState, action: PayloadAction<IStorageFile>) => {
+        state.files.push(action.payload);
+      }
+    ),
+    removeSelectedFile: produce(
+      (state: SelectedFilesState, action: PayloadAction<IStorageFile>) => {
         state.files = state.files.filter(
           (file) => file.name !== action.payload.name
         );
@@ -31,7 +34,10 @@ export const selectedFilesSlice = createSlice({
   },
 });
 
-export const { addFile, removeFile } = selectedFilesSlice.actions;
+export const {
+  addSelectedFile,
+  removeSelectedFile,
+} = selectedFilesSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectSelectedFiles = (state: RootState) =>
