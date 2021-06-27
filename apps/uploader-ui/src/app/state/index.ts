@@ -1,15 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-
-import { queuedFilesReducer } from './queued-files/reducer';
-import { selectedFilesReducer } from './selected-files/reducer';
-import { uploadedFilesReducer } from './uploaded-files/reducer';
+import { filesReducer } from './files/reducer';
 
 export const store = configureStore({
   reducer: {
-    queuedFiles: queuedFilesReducer,
-    selectedFiles: selectedFilesReducer,
-    uploadedFiles: uploadedFilesReducer,
+    files: filesReducer,
   },
 });
 

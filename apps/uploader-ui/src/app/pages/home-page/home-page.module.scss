@@ -1,7 +1,10 @@
 .homeContainer {
   gap: 1rem;
+  height: 100%;
   display: grid;
   padding: 1rem;
+  align-content: flex-start;
+  grid-template-rows: repeat(2, auto) 1fr;
 
   h1 {
     margin: 0;
@@ -10,6 +13,36 @@
   .cardContainer {
     gap: 1rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'files files files path path path'
+      'add add clean clean update update';
+
+    .filesField {
+      grid-area: files;
+    }
+
+    .pathField {
+      grid-area: path;
+    }
+
+    .addButton,
+    .clearButton,
+    .uploadButton {
+      font-weight: bold;
+    }
+
+    .addButton {
+      grid-area: add;
+    }
+
+    .clearButton {
+      grid-area: clean;
+    }
+
+    .uploadButton {
+      grid-area: update;
+      color: white;
+      background-color: green;
+    }
   }
 }

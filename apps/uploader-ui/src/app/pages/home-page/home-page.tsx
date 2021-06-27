@@ -1,28 +1,31 @@
 import { Button, Card, CardContent, Paper, TextField } from '@material-ui/core';
-import { ChangeEventHandler, useRef, useState } from 'react';
+import { ChangeEventHandler, createRef, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FileTable } from '../../shared/components/file-table/file-table';
+
+import FileTable from '../../shared/components/file-table/file-table';
+import { IStorageFile } from '../../shared/models/storage-file.model';
 import {
   mapFileListToArray,
   mergeFileArrays,
 } from '../../shared/services/fs-service';
 import {
-  addSelectedFile,
+  addSelectedFiles,
+  removeSelectedFile,
   selectSelectedFiles,
-} from '../../state/selected-files/reducer';
+} from '../../state/files/reducer';
 import styles from './home-page.module.scss';
 
 /* eslint-disable-next-line */
 export interface HomePageProps {}
 
 export function HomePage(props: HomePageProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = createRef<HTMLInputElement>();
 
   const selectedFiles = useSelector(selectSelectedFiles);
   const dispatch = useDispatch();
 
   const [formState, setFormState] = useState({
-    files: [] as File[],
+    files: [] as IStorageFile[],
     uploadPath: '',
   });
 
@@ -32,13 +35,14 @@ export function HomePage(props: HomePageProps) {
 
   const fileSelectedHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     e.preventDefault();
+
     const fileInput = e.target;
     if (fileInput.files === null) {
       return;
     }
 
-    const files = mapFileListToArray(fileInput.files);
-    console.log(fileInput.files);
+    const files = mapFileListToArray(fileInput.files) as IStorageFile[];
+
     setFormState({
       ...formState,
       files: mergeFileArrays(formState.files, files),
@@ -47,10 +51,41 @@ export function HomePage(props: HomePageProps) {
 
   const uploadPathChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     e.preventDefault();
+
     setFormState({
       ...formState,
       uploadPath: e.target.value,
     });
+  };
+
+  const addFilesToList = () => {
+    const { files, uploadPath } = formState;
+
+    dispatch(
+      addSelectedFiles(
+        files.map<IStorageFile>((file) => ({
+          id: file.name,
+          name: file.name,
+          path: file.path,
+          uploadPath,
+          isUploaded: false,
+        }))
+      )
+    );
+
+    clearForm();
+  };
+
+  const clearForm = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+
+    setFormState({ files: [], uploadPath: '' });
+  };
+
+  const deleteFile = (file: IStorageFile) => {
+    dispatch(removeSelectedFile(file));
   };
 
   return (
@@ -69,6 +104,7 @@ export function HomePage(props: HomePageProps) {
           />
 
           <TextField
+            className={styles.filesField}
             label="Archivos"
             type="text"
             variant="outlined"
@@ -78,22 +114,41 @@ export function HomePage(props: HomePageProps) {
           ></TextField>
 
           <TextField
+            className={styles.pathField}
             label="Ruta de Subida"
             variant="outlined"
+            value={formState.uploadPath}
             onChange={uploadPathChangeHandler}
           ></TextField>
 
-          <Button variant="contained" color="primary">
+          <Button
+            className={styles.addButton}
+            variant="contained"
+            color="primary"
+            onClick={addFilesToList}
+          >
             Añadir archivos
           </Button>
 
-          <Button variant="contained" color="secondary">
+          <Button
+            className={styles.clearButton}
+            variant="contained"
+            color="secondary"
+            onClick={clearForm}
+          >
             Limpiar
+          </Button>
+
+          <Button className={styles.uploadButton} variant="contained">
+            Subir
           </Button>
         </CardContent>
       </Card>
 
-      <FileTable data={selectedFiles}></FileTable>
+      <FileTable
+        data={selectedFiles}
+        deleteFileClickHandler={deleteFile}
+      ></FileTable>
     </Paper>
   );
 }
